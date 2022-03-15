@@ -1,20 +1,38 @@
-package com.ecommerce.dto;
+package com.ecommerce.model;
 
-import com.ecommerce.model.UserDetails;
+import javax.persistence.*;
+import java.util.Set;
 
-import java.util.List;
+@Entity
+public class Users {
 
-public class UsersDto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
+    @Column(unique=true)
     private String email;
     private String firstName;
     private String lastName;
     private String middleName;
     private Boolean isActive;
 
-    private List<UserDetailsDto> userDetails;
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    private Set<UserDetails> userDetailsSet;
 
-    public UsersDto(String email, String firstName, String lastName, String middleName, Boolean isActive) {
+    public Users() {
+    }
+
+    public Users(Long id, String email, String firstName, String lastName, String middleName, Boolean isActive) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.isActive = isActive;
+    }
+    public Users(String email, String firstName, String lastName, String middleName, Boolean isActive) {
+
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,13 +40,12 @@ public class UsersDto {
         this.isActive = isActive;
     }
 
-    public UsersDto(String email, String firstName, String lastName, String middleName, Boolean isActive, List<UserDetailsDto> userDetails) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.isActive = isActive;
-        this.userDetails = userDetails;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -71,11 +88,11 @@ public class UsersDto {
         isActive = active;
     }
 
-    public List<UserDetailsDto> getUserDetails() {
-        return userDetails;
+    public Set<UserDetails> getUserDetailsSet() {
+        return userDetailsSet;
     }
 
-    public void setUserDetails(List<UserDetailsDto> userDetails) {
-        this.userDetails = userDetails;
+    public void setUserDetailsSet(Set<UserDetails> userDetailsSet) {
+        this.userDetailsSet = userDetailsSet;
     }
 }
